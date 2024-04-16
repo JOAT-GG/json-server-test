@@ -54,4 +54,4 @@ jobs:
         port: ${{ secrets.PORT }}
         timeout: 40s
         script: |
-          cd ~/Desktop/backend && docker-compose -f backend.yml up -d
+          cd ~/Desktop/backend && docker build -t json-server . && docker stop json-server && docker rm -f json-server && docker run -d -p 8080:8080 --name json-server json-server:latest
