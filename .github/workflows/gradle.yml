@@ -42,4 +42,4 @@ jobs:
         password: ${{ secrets.PASSWORD }}
         port: ${{ secrets.PORT }}
         source: "./build/libs/*.jar"
-        target: "/desktop/backend"
+        target: "~/Desktop/backend"
