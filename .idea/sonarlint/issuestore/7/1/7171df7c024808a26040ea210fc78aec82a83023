@@ -1,0 +1,25 @@
+
+j
+java:S1192"HDefine a constant instead of duplicating this literal "    {
+" 20 times.(Ÿñ¼Ñÿÿÿÿÿ8à¥ˆñ1
+f
+java:S1192$"IDefine a constant instead of duplicating this literal "    },
+" 19 times.(¥ÁÊÁ8à¥ˆñ1
+
+java:S1192F"bDefine a constant instead of duplicating this literal "        \"position\": \"MIDDLE\"
+" 3 times.(Ú¸Íš8à¥ˆñ1
+{
+java:S1192'"YDefine a constant instead of duplicating this literal "        \"win\": false,
+" 9 times.(ûÍ×ûÿÿÿÿÿ8à¥ˆñ1
+‚
+java:S1192?"`Define a constant instead of duplicating this literal "        \"position\": \"NONE\"
+" 9 times.(‹Ä™şÿÿÿÿ8à¥ˆñ1
+{
+java:S1192 "YDefine a constant instead of duplicating this literal "        \"win\": true,
+" 11 times.(¢ø‡ñıÿÿÿÿ8à¥ˆñ1
+
+java:S1192#"bDefine a constant instead of duplicating this literal "        \"position\": \"JUNGLE\"
+" 7 times.(¸ÿÇ›8à¥ˆñ1
+O
+java:S6126"2Replace this String concatenation with Text block.(áÛ‘…8ñ¥ˆñ1
+M	java:S106­"+Replace this use of System.out by a logger.(ŸÚÄÒÿÿÿÿÿ8ÎÂñ1
