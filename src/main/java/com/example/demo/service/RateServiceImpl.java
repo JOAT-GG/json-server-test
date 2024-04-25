@@ -17,7 +17,7 @@ public class RateServiceImpl implements RateService {
     public RateResponse getRateData() {
         return RateResponse.of(
                 queryRepository.getTotalWinRate(),
-                queryRepository.getChampionWinRate(),
+                queryRepository.getChampionWinLoseRate(),
                 queryRepository.getPositionWinRate()
         );
     }

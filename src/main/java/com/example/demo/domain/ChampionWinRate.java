@@ -11,10 +11,14 @@ import lombok.ToString;
 public class ChampionWinRate {
 
     private String name;
+    private long winCnt;
+    private long loseCnt;
     private double rate;
 
     public ChampionWinRate(String name, int winCnt, long playCnt) {
         this.name = name;
+        this.winCnt = winCnt;
+        this.loseCnt = playCnt - winCnt;
         this.rate = DoubleRoundUtil.round((winCnt == 0 ? 0 : ((double) winCnt / playCnt) * 100));
     }
 }

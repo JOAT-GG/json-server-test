@@ -28,7 +28,7 @@ public class MatchResultQueryRepository {
                 .fetchOne();
     }
 
-    public List<ChampionWinRate> getChampionWinRate() {
+    public List<ChampionWinRate> getChampionWinLoseRate() {
         return query
                 .select(Projections.constructor(
                         ChampionWinRate.class,

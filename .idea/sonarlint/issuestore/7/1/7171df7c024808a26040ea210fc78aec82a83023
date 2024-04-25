@@ -22,4 +22,3 @@ java:S1192#"bDefine a constant instead of duplicating this literal "        \"p
 " 7 times.(¸ÿÇ›8à¥ˆñ1
 O
 java:S6126"2Replace this String concatenation with Text block.(áÛ‘…8ñ¥ˆñ1
-M	java:S106­"+Replace this use of System.out by a logger.(ŸÚÄÒÿÿÿÿÿ8ÎÂñ1
