@@ -8,7 +8,7 @@ public class HashtagServiceImpl implements HashtagService {
 
     // 플레이어의 해시 태그를
     @Override
-    public HashtagResponse getPlayerHashtags(String summonerName) {
+    public HashtagResponse getPlayerHashtags(String gameName, String tagLine) {
         // 1. summonerName 으로 puuid 조회
 
         // 2. puuid 를 통해 matchV5 에서 최근 랭크 게임 20 게임 가져오기

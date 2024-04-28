@@ -54,3 +54,11 @@ j
 :src/main/java/com/example/demo/domain/HashtagResponse.java,0/5/058be8b19e0f72fd9c1e1a770e1288be11150987
 n
 >src/main/java/com/example/demo/service/HashtagServiceImpl.java,8/2/8210feb7942f387007bb2b74e6c1890d16157a36
+r
+Bsrc/test/java/com/example/demo/service/HashtagServiceImplTest.java,8/5/850bac7b34981a5e0e636c30f509d144a8073b86
+m
+=src/main/java/com/example/demo/exception/CustomException.java,a/8/a8a75e1f0716485e6a6c269da6a159945f16dbbd
+g
+7src/main/java/com/example/demo/exception/ErrorCode.java,8/3/83b2095de1c6f1a3bc2dc119315e917b6ce55bcd
+|
+Lsrc/main/java/com/example/demo/exception/handler/GlobalExceptionHandler.java,7/9/79543b6c7f83ad917fc469ec412742cd05cabdd3

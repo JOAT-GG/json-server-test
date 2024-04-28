@@ -5,5 +5,5 @@ import com.example.demo.domain.*;
 
 public interface HashtagService {
 
-    HashtagResponse getPlayerHashtags(String summonerName);
+    HashtagResponse getPlayerHashtags(String gameName, String tagLine);
 }

@@ -2,6 +2,7 @@ package com.example.demo.domain;
 
 import lombok.*;
 
+@Getter
 public class HashtagResponse {
 
     private final boolean isOverAverageDeath;
