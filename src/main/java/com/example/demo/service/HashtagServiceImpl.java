@@ -1,70 +1,109 @@
 package com.example.demo.service;
 
 import com.example.demo.domain.*;
+import com.fasterxml.jackson.databind.*;
+import lombok.*;
+import lombok.extern.slf4j.*;
+import org.springframework.http.*;
 import org.springframework.stereotype.*;
 import org.springframework.web.client.*;
 
+import java.io.*;
 import java.util.*;
 
+@Slf4j
 @Service
+@RequiredArgsConstructor
 public class HashtagServiceImpl implements HashtagService {
 
     private final RestTemplate restTemplate;
+    private final ObjectMapper objectMapper;
 
-    public HashtagServiceImpl(RestTemplate restTemplate) {
-        this.restTemplate = restTemplate;
-    }
-
-    // API Key는 외부 설정으로부터 주입받거나 보안이 강화된 방식으로 관리되어야 합니다.
     private static final String API_KEY = "RGAPI-ce054f05-d3b8-4b29-9532-819b83a22364";
     private static final String RIOT_ACCOUNT_API = "https://asia.api.riotgames.com/riot/account/v1/accounts/by-riot-id/{summonerName}/{tagLine}?api_key=" + API_KEY;
     private static final String RIOT_MATCHES_API = "https://asia.api.riotgames.com/lol/match/v5/matches/by-puuid/{puuid}/ids?type=ranked&start=0&count=20&api_key=" + API_KEY;
     private static final String RIOT_MATCH_API = "https://asia.api.riotgames.com/lol/match/v5/matches/{matchId}?api_key=" + API_KEY;
-    private static final String RIOT_MATCH_TIMELINE_DATA_API = "https://asia.api.riotgames.com/lol/match/v5/matches/{matchId}/timeline?api_key=" + API_KEY;
-
 
     @Override
     public HashtagResponse getPlayerHashtags(String gameName, String tagLine) {
-        // 1. summonerName 으로 puuid 조회
-        String accountUrl = RIOT_ACCOUNT_API.replace("{summonerName}", gameName)
-                .replace("{tagLine}", tagLine);
-        AccountResponse account = restTemplate.getForObject(accountUrl, AccountResponse.class);
-        String puuid = account.getPuuid();
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Accept", "*/*");  // 모든 타입의 콘텐츠를 받아들임
+        HttpEntity<String> entity = new HttpEntity<>(headers);
 
-        // 2. puuid 를 통해 matchV5 에서 최근 랭크 게임 20 게임 가져오기
+        String accountUrl = RIOT_ACCOUNT_API.replace("{summonerName}", gameName).replace("{tagLine}", tagLine);
+        ResponseEntity<String> accountResponse = restTemplate.exchange(accountUrl, HttpMethod.GET, entity, String.class);
+        String puuid = parsePuuid(accountResponse.getBody());
+
         String matchesUrl = RIOT_MATCHES_API.replace("{puuid}", puuid);
-        List<String> matchIds = restTemplate.getForObject(matchesUrl, List.class);
+        ResponseEntity<String> matchesResponse = restTemplate.exchange(matchesUrl, HttpMethod.GET, entity, String.class);
+        List<String> matchIds = parseMatchIds(matchesResponse.getBody());
 
-        // 3. 불러온 경기 데이터로 지표 계산
-        for (String matchId : matchIds) {
-            String matchUrl = RIOT_MATCH_API.replace("{matchId}", matchId);
-            String matchTimelineURL = RIOT_MATCH_TIMELINE_DATA_API.replace("{matchId}", matchId);
+        boolean overAverageDeath = isOverAverageDeath(puuid, matchIds);
+        boolean diesMidToLateOften = false;  // Placeholder
+        boolean playsUnskilledChamps = false;  // Placeholder
 
-        }
-
-        //      1. 팀 평균 데스보다 많은가?                 -> isOverAverageDeath()
-        //      2. 중후반에 많이 죽냐? (기준은 일단 5데스)     -> doesPlayerDieMidToLateOften()
-        //      3. 안하던 챔프를 최근에 하냐                 -> doesPlayUnskilledChampRecently()
-        boolean overAverageDeath = isOverAverageDeath();
-        boolean diesMidToLateOften = doesPlayerDieMidToLateOften();
-        boolean playsUnskilledChamps = doesPlayUnskilledChampRecently();
-
-
-        // 4. 반환
         return HashtagResponse.of(overAverageDeath, diesMidToLateOften, playsUnskilledChamps);
     }
 
-    private boolean doesPlayUnskilledChampRecently() {
-        return true;
+    private String parsePuuid(String json) {
+        try {
+            JsonNode rootNode = objectMapper.readTree(json);
+            return rootNode.path("puuid").asText();
+        } catch (IOException e) {
+            log.error("Failed to parse JSON for PUUID", e);
+            throw new RuntimeException("Failed to parse JSON for PUUID", e);
+        }
     }
 
-    private boolean doesPlayerDieMidToLateOften() {
-        return true;
+    private List<String> parseMatchIds(String json) {
+        try {
+            JsonNode rootNode = objectMapper.readTree(json);
+            List<String> matchIds = new ArrayList<>();
+            if (rootNode.isArray()) {
+                for (JsonNode node : rootNode) {
+                    matchIds.add(node.asText());
+                }
+            }
+            return matchIds;
+        } catch (IOException e) {
+            log.error("Failed to parse JSON for match IDs", e);
+            throw new RuntimeException("Failed to parse JSON for match IDs", e);
+        }
     }
 
-    private boolean isOverAverageDeath() {
-        return true;
+    private boolean isOverAverageDeath(String puuid, List<String> matchIds) {
+        int overAverageDeathCount = 0;
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Accept", "*/*");
+        HttpEntity<String> entity = new HttpEntity<>(headers);
+
+        for (String matchId : matchIds) {
+            String matchUrl = RIOT_MATCH_API.replace("{matchId}", matchId);
+            ResponseEntity<String> matchResponse = restTemplate.exchange(matchUrl, HttpMethod.GET, entity, String.class);
+            try {
+                JsonNode rootNode = objectMapper.readTree(matchResponse.getBody());
+                JsonNode participantsNode = rootNode.path("info").path("participants");
+                int participantDeaths = 0;
+                int totalDeaths = 0;
+                int numParticipants = 0;
+
+                for (JsonNode participant : participantsNode) {
+                    int deaths = participant.path("deaths").asInt();
+                    totalDeaths += deaths;
+                    numParticipants++;
+                    if (participant.path("puuid").asText().equals(puuid)) {
+                        participantDeaths = deaths;
+                    }
+                }
+
+                if (numParticipants > 0 && participantDeaths > (totalDeaths / numParticipants)) {
+                    overAverageDeathCount++;
+                }
+            } catch (IOException e) {
+                log.error("Error processing match data", e);
+            }
+        }
+
+        return overAverageDeathCount > matchIds.size() / 2;
     }
-
-
 }
