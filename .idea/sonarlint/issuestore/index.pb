@@ -66,3 +66,9 @@ d
 4src/main/java/com/example/demo/config/AppConfig.java,1/d/1d91e4dbb14b6c84567d5baa853afd3d33e39da2
 j
 :src/main/java/com/example/demo/domain/AccountResponse.java,3/4/346234b66b6ead9fc42df4a8b961a90340bd9300
+j
+:src/main/java/com/example/demo/service/RiotApiService.java,d/0/d02b00cd7bbc062757ae584d8a89352221fc4ce5
+n
+>src/main/java/com/example/demo/service/RiotApiServiceImpl.java,a/5/a541d970b26f4178fdb6b90a54012fd53327443b
+h
+8src/main/java/com/example/demo/config/RiotApiConfig.java,6/6/664d27936fbf297a72bfa4e321dc87f58c510380

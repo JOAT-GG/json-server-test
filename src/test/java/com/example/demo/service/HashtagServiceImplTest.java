@@ -33,7 +33,7 @@ class HashtagServiceImplTest {
         // then - 검증
         assertEquals(playerHashtags.isOverAverageDeath(), expectedResponse.isOverAverageDeath());
         assertEquals(playerHashtags.isDoesPlayerDieMidToLateOften(), expectedResponse.isDoesPlayerDieMidToLateOften());
-        assertEquals(playerHashtags.isDoesPlayUnskilledChampRecently(), expectedResponse.isDoesPlayUnskilledChampRecently());
+        assertEquals(playerHashtags.isPlayedUnskilledChampRecently(), expectedResponse.isPlayedUnskilledChampRecently());
 
     }
 
