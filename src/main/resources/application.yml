@@ -6,7 +6,7 @@ spring:
 
 riot:
   api:
-    key: "RGAPI-ce054f05-d3b8-4b29-9532-819b83a22364"
+    key: "RGAPI-aaf11af5-dc2a-4ef5-b881-b67d403f057b"
     account-url: "https://asia.api.riotgames.com/riot/account/v1/accounts/by-riot-id/{gameName}/{tagLine}?api_key={apiKey}"
     matches-url: "https://asia.api.riotgames.com/lol/match/v5/matches/by-puuid/{puuid}/ids?type=ranked&start=0&count=20&api_key={apiKey}"
     match-url: "https://asia.api.riotgames.com/lol/match/v5/matches/{matchId}?api_key={apiKey}"
